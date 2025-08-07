@@ -1,112 +1,111 @@
-Pneumonia Detection from Chest X-Rays using ResNet50 (TensorFlow/Keras)
-=======================================================================
+# Chest X-ray Pneumonia Classifier
 
-This project builds a deep learning classifier to distinguish between Normal and Pneumonia chest X-rays using TensorFlow’s ResNet50 architecture. It is a binary image classification problem where the model learns from labeled chest X-ray images and predicts whether a given image indicates pneumonia or not.
+This project is an end-to-end system for detecting pneumonia from chest X-ray images. It includes training scripts, a deep learning model, and a full-stack web application (Flask + React) for real-time inference.
 
-File Structure
---------------
+---
 
-Current file structure:
+## Directory Structure
 
+```
 chest_xray/
 ├── train/                     # Training data (NORMAL / PNEUMONIA)
 ├── val/                       # Validation data (NORMAL / PNEUMONIA)
 ├── test/                      # Test data (NORMAL / PNEUMONIA)
-└── scripts/                   # Contains training and prediction scripts
-    ├── train_resnet50.py
-    └── predict_one_xray.py
+├── scripts/                   # Model training and CLI prediction
+│   ├── train_resnet50.py
+│   └── predict_one_xray.py
+├── backend/                   # Flask backend for prediction API
+│   ├── app.py
+│   ├── requirements.txt
+│   └── utils/
+│       └── preprocessing.py
+├── frontend/                  # React + TypeScript frontend
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── src/
+│       ├── App.tsx
+│       ├── api.ts
+│       ├── index.tsx
+│       └── styles.css
+└── README.md                  # Project overview and setup instructions
+```
 
-Dependencies
-------------
+---
 
-Install the required libraries:
+## Features
 
-    pip install tensorflow numpy matplotlib
+- Trains a deep learning model (ResNet50) to classify X-ray images as **NORMAL** or **PNEUMONIA**.
+- Exposes a Flask API (`/predict`) for real-time inference.
+- Frontend React app for uploading images and displaying predictions.
+- Preprocessing and inference logic separated for easy extension.
 
-Training the Model
-------------------
+---
 
-Navigate to the scripts/ directory and run the training script:
+## Setup Instructions
 
-    cd scripts
-    python train_resnet50.py
+### 1. Backend Setup
 
-The script will:
-- Load the training and validation datasets
-- Build a ResNet50-based binary classifier
-- Train it for 25 epochs
-- Save the trained model as pneumonia_detector_resnet50.h5 in the scripts/ directory
+```bash
+cd chest_xray/backend
+pip install -r requirements.txt
+python app.py
+```
 
-You can tune:
-- Epochs
-- Learning rate
-- Batch size
-- Dropout or fine-tuning options
+This runs the Flask API at `http://localhost:5000/predict`.
 
-Predicting on a Single Image
-----------------------------
+### 2. Frontend Setup
 
-To test the model on a single image (e.g., from the test/ folder):
+```bash
+cd chest_xray/frontend
+npm install
+npm start
+```
 
-    python predict_one_xray.py
+Runs the React app on `http://localhost:3000/` and connects to the Flask backend.
 
-Expected Output:
+### 3. Training (Optional)
 
-    Prediction: NORMAL  # or PNEUMONIA
+If you want to retrain the model:
 
-Make sure to update the image path in predict_one_xray.py if needed.
+```bash
+cd chest_xray/scripts
+python train_resnet50.py
+```
 
-Dataset
--------
+To test a single image from CLI:
 
-Download the dataset from:
-https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia
+```bash
+python predict_one_xray.py --image_path ../test/NORMAL/IM-0001-0001.jpeg
+```
 
-Place the data in the chest_xray/ folder as:
+---
 
-chest_xray/
-├── train/
-│   ├── NORMAL/
-│   └── PNEUMONIA/
-├── val/
-│   ├── NORMAL/
-│   └── PNEUMONIA/
-└── test/
-    ├── NORMAL/
-    └── PNEUMONIA/
+## Model
 
-Model Architecture
-------------------
+- Model: ResNet50 (transfer learning)
+- Input Size: 224x224
+- Output: Binary classification (NORMAL or PNEUMONIA)
+- Loss: Binary cross-entropy
 
-- Base Model: ResNet50 (pre-trained on ImageNet)
-- Top Layers: GlobalAveragePooling -> Dense(64) -> Dense(1, sigmoid)
-- Loss Function: Binary Crossentropy
-- Optimizer: Adam (Adaptive Moment Estimation)
+---
 
-Production Tips
----------------
+## API Endpoint
 
-- Train for 30–50 epochs with early stopping
-- Fine-tune the last few ResNet layers
-- Track AUC, precision, recall, and F1-score
-- Use Grad-CAM for model explainability
-- Export to TensorFlow Lite or ONNX for mobile deployment
+**POST** `/predict`  
+Form-data: `file=<image>`  
+Returns JSON: `{ "label": "PNEUMONIA", "confidence": 0.981 }`
 
-Future Ideas
-------------
+---
 
-- Streamlit or Flask app for X-ray upload and prediction
-- Web-based dashboard for healthcare usage
-- Cloud deployment with TensorFlow Serving or FastAPI
+## Notes
 
-Disclaimer
-----------
+- Backend uses `CORS` to support cross-origin requests.
+- All dependencies are listed in `requirements.txt` and `package.json`.
+- Model must be trained and saved to `model/xray_classifier.h5` before using the API.
 
-This model is for educational and research purposes only. It is not intended for medical diagnosis. Consult certified professionals for clinical use.
+---
 
-References
-----------
+## Credits
 
-- Kaggle Dataset: https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia
-- ResNet Paper: https://arxiv.org/abs/1512.03385
-- TensorFlow Documentation: https://www.tensorflow.org/api_docs/python/tf/keras/applications
+- Dataset: [Chest X-Ray Images (Pneumonia)](https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia)
+- Built with TensorFlow, Flask, React, and TypeScript.
