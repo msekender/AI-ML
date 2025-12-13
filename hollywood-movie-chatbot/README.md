@@ -1,36 +1,120 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎬 Hollywood Movie AI Chatbot
 
-## Getting Started
+An AI-powered web application that answers questions about Hollywood movies using **real movie metadata** and **intelligent natural-language reasoning**.
 
-First, run the development server:
+Users can ask about:
+- 🎭 Cast & crew
+- 🎬 Directors
+- 🗂 Genres & release years
+- 📖 High-level plot summaries
+- 🎞 Similar movie recommendations
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+The application combines **TMDB movie data** with a **large language model (LLM)** to provide accurate, human-friendly answers.
+
+---
+
+## 🌐 Live Demo
+
+👉 **Live URL:** *(Vercel deployment)*  
+`https://ai-7pouu0l7p-zulfiqer-sekenders-projects.vercel.app/`
+
+- `/` → Landing page  
+- `/chat` → Interactive movie chatbot  
+
+---
+
+## 🧠 How It Works (High Level)
+
+1. User asks a movie-related question in natural language  
+2. The backend:
+   - Extracts the movie title from the question
+   - Fetches factual data from **TMDB**
+   - Injects that data into an **LLM prompt**
+3. The LLM generates a grounded, human-readable response
+4. The UI displays:
+   - Chat response
+   - Movie details card (poster, cast, genres)
+   - Similar movie recommendations
+
+This avoids hallucinations and keeps answers fact-based.
+
+---
+
+## 🛠 Tech Stack
+
+### Frontend
+- **Next.js (App Router)**
+- **TypeScript**
+- **Tailwind CSS**
+
+### Backend
+- **Next.js API Routes**
+- **Groq LLM API**
+- **TMDB API**
+
+### Deployment
+- **Vercel** (free tier)
+
+---
+
+## 📂 Project Structure
+
+```text
+hollywood-movie-chatbot/
+├── app/
+│   ├── page.tsx
+│   ├── chat/page.tsx
+│   └── api/chat/route.ts
+├── public/
+├── package.json
+├── next.config.ts
+└── README.md
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔑 Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+GROQ_API_KEY=your_groq_api_key
+TMDB_API_KEY=your_tmdb_api_key
+```
 
-## Learn More
+- Do **NOT** commit `.env.local`
+- Configure env vars in **Vercel → Project Settings → Environment Variables**
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ▶️ Run Locally
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm install
+npm run dev
+```
 
-## Deploy on Vercel
+Open `http://localhost:3000`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## ✨ Example Questions
+
+- Who acted in Titanic?
+- Who directed The Dark Knight?
+- Movies similar to Inception
+- What genre is Interstellar?
+
+---
+
+## 📌 Attribution
+
+- Movie data provided by **The Movie Database (TMDB)**
+- AI responses powered by **Groq LLM**
+
+This product uses the TMDB API but is not endorsed or certified by TMDB.
+
+---
+
+## 👤 Author
+
+**Zulfiqer Sekender**  
+GitHub: https://github.com/msekender
